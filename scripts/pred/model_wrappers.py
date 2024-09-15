@@ -104,12 +104,11 @@ class StreamingModel:
         import transformers
         
         config = LlamaConfig(name_or_path)
-        config._attn_implementation = 'sdpa'
+        config._attn_implementation = config.attn_implementation = 'sdpa'
         self.model = LlamaForCausalLM.from_pretrained(
             name_or_path,
             config=config, 
-            trust_remote_code=True, 
-            device_map="auto", 
+            device_map={'':'cuda:0'}, 
             quantization_config=transformers.BitsAndBytesConfig(
                 load_in_4bit=True,
                 llm_int8_skip_modules=[
@@ -121,7 +120,7 @@ class StreamingModel:
                 bnb_4bit_quant_type="nf4",
             ),
             torch_dtype=torch.bfloat16,
-            attn_implementation='sdpa',
+            trust_remote_code=True, 
         )
         
         for m in self.model.modules():
