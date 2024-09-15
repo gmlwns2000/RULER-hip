@@ -51,6 +51,7 @@ SERVER_TYPES = (
     'openai',
     'gemini',
     'hf',
+    'sllm',
     'mamba',
 )
 
@@ -179,7 +180,7 @@ def get_llm(tokens_to_generate):
             max_new_tokens=tokens_to_generate,
         )
     
-    elif args.server_type == 'hf':
+    elif args.server_type == 'sllm':
         from model_wrappers import StreamingModel
         llm = StreamingModel(
             name_or_path=args.model_name_or_path,
