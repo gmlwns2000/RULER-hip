@@ -99,12 +99,15 @@ class StreamingModel:
         self.pipeline = None
         
         from hip.models.modeling_llama import (
-            LlamaForCausalLM,
+            LlamaForCausalLM, LlamaConfig
         )
         import transformers
         
+        config = LlamaConfig(name_or_path)
+        config._attn_implementation = 'sdpa'
         self.model = LlamaForCausalLM.from_pretrained(
-            name_or_path, 
+            name_or_path,
+            config=config, 
             trust_remote_code=True, 
             device_map="auto", 
             quantization_config=transformers.BitsAndBytesConfig(
