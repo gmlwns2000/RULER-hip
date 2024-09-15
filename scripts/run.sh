@@ -30,7 +30,9 @@ ROOT_DIR="benchmark_root" # the path that stores generated task samples and mode
 MODEL_DIR="../.." # the path that contains individual model folders from HUggingface.
 ENGINE_DIR="." # the path that contains individual engine folders from TensorRT-LLM.
 BATCH_SIZE=1  # increase to improve GPU utilization
-
+if [ "$SERVER_PORT" == "" ]; then
+    SERVER_PORT=5000
+fi
 
 # Model and Tokenizer
 source config_models.sh
@@ -66,9 +68,10 @@ if [ "$MODEL_FRAMEWORK" == "vllm" ]; then
         --model=${MODEL_PATH} \
         --tensor-parallel-size=${GPUS} \
         --dtype bfloat16 \
+        --port ${SERVER_PORT} \
         --disable-custom-all-reduce \
         &
-    while ! nc -z localhost 5000; do   
+    while ! nc -z localhost ${SERVER_PORT}; do   
         sleep 0.1 # wait for 1/10 of the second before check again
     done
 elif [ "$MODEL_FRAMEWORK" == "trtllm" ]; then
@@ -80,7 +83,7 @@ elif [ "$MODEL_FRAMEWORK" == "sglang" ]; then
     python -m sglang.launch_server \
         --model-path ${MODEL_PATH} \
         --tp ${GPUS} \
-        --port 5000 \
+        --port ${SERVER_PORT} \
         --enable-flashinfer \
         &
     # use sglang/test/killall_sglang.sh to kill sglang server if it hangs
@@ -117,6 +120,7 @@ for MAX_SEQ_LENGTH in "${SEQ_LENGTHS[@]}"; do
             --benchmark ${BENCHMARK} \
             --task ${TASK} \
             --server_type ${MODEL_FRAMEWORK} \
+            --server_port ${SERVER_PORT} \
             --model_name_or_path ${MODEL_PATH} \
             --temperature ${TEMPERATURE} \
             --top_k ${TOP_K} \
