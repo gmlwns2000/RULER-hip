@@ -86,6 +86,7 @@ class Client(abc.ABC):
                 url="http://{}:{}/{}".format(self.server_host, self.server_port, route),
                 data=json.dumps(request),
                 headers={"Content-Type": "application/json"},
+                timeout=3600,
             ).json()
         return outputs
 
@@ -326,7 +327,8 @@ class OpenAIClient:
             response = requests.post(
                 os.path.join(p_token_url, "oauth/api/v1/ssa/default/token"),
                 data={"grant_type": "client_credentials", "client_id": p_client_id,
-                        "client_secret": p_client_secret, "scope": p_scope}
+                        "client_secret": p_client_secret, "scope": p_scope},
+                timeout=3600,
             )
             response.raise_for_status()
             token = response.json()
