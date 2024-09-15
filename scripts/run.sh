@@ -70,6 +70,7 @@ if [ "$MODEL_FRAMEWORK" == "vllm" ]; then
         --dtype bfloat16 \
         --port ${SERVER_PORT} \
         --disable-custom-all-reduce \
+        --gpu-memory-utilization 0.8 \
         &
     while ! nc -z localhost ${SERVER_PORT}; do   
         sleep 0.1 # wait for 1/10 of the second before check again
