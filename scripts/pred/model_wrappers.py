@@ -103,7 +103,7 @@ class StreamingModel:
         )
         import transformers
         
-        config = LlamaConfig(name_or_path)
+        config = LlamaConfig.from_pretrained(name_or_path)
         config._attn_implementation = config.attn_implementation = 'sdpa'
         self.model = LlamaForCausalLM.from_pretrained(
             name_or_path,
