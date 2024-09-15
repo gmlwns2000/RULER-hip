@@ -72,6 +72,8 @@ if [ "$MODEL_FRAMEWORK" == "vllm" ]; then
         --dtype bfloat16 \
         --port ${SERVER_PORT} \
         --gpu-memory-utilization 0.7 \
+        --max-num-batched-tokens 131072 \
+        --enable-chunked-prefill False \
         --max-num-seqs ${BATCH_SIZE} \
         &
         # --disable-custom-all-reduce \
