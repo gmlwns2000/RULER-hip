@@ -14,6 +14,7 @@
 
 import json
 import logging
+import os
 import requests
 import torch
 from typing import Dict, List, Optional
@@ -53,6 +54,98 @@ class HuggingFaceModel:
             self.tokenizer.pad_token = self.tokenizer.eos_token
             self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
 
+
+    def __call__(self, prompt: str, **kwargs) -> dict:
+        return self.process_batch([prompt], **kwargs)[0]
+
+    def process_batch(self, prompts: List[str], **kwargs) -> List[dict]:
+        if self.pipeline is None:
+            inputs = self.tokenizer(prompts, return_tensors="pt", padding=True).to(self.model.device)
+            generated_ids = self.model.generate(
+                **inputs,
+                **self.generation_kwargs
+            )
+            generated_texts = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+        else:
+            output = self.pipeline(text_inputs=prompts, **self.generation_kwargs, )
+            assert len(output) == len(prompts)
+            # output in the form of a list of list of dictionaries
+            # outer list len = batch size
+            # inner list len = 1
+            generated_texts = [llm_result[0]["generated_text"] for llm_result in output]
+
+        results = []
+
+        for text, prompt in zip(generated_texts, prompts):
+            # remove the input form the generated text
+            if text.startswith(prompt):
+                text = text[len(prompt):]
+
+            if self.stop is not None:
+                for s in self.stop:
+                    text = text.split(s)[0]
+
+            results.append({'text': [text]})
+
+        return results
+
+
+class StreamingModel:
+    def __init__(self, name_or_path: str, **generation_kwargs) -> None:
+        from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+
+        self.tokenizer = AutoTokenizer.from_pretrained(name_or_path, trust_remote_code=True)
+        
+        self.pipeline = None
+        
+        from hip.models.modeling_llama import (
+            LlamaForCausalLM,
+        )
+        import transformers
+        
+        self.model = LlamaForCausalLM.from_pretrained(
+            name_or_path, 
+            trust_remote_code=True, 
+            device_map="auto", 
+            quantization_config=transformers.BitsAndBytesConfig(
+                load_in_4bit=True,
+                llm_int8_skip_modules=[
+                    'tree_avgpool_scaler',
+                    'lm_head',
+                ],
+                bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4",
+            ),
+            torch_dtype=torch.bfloat16,
+            attn_implementation='sdpa',
+        )
+        
+        for m in self.model.modules():
+            if hasattr(m, 'attention_method'):
+                m.attention_method = os.getenv('RULER_ATTENTION_BACKEND', 'hip')
+                m.tree_k = 512
+                m.tree_block_size_q = 64
+                m.tree_block_stride_q = 2
+                m.tree_block_size_k = 2
+                m.tree_block_stride_k = 1
+                m.tree_using_context_avg = False
+                m.tree_dense_queries = -1
+                m.tree_dense_layers = list(range(3))
+                m.tree_rope_method = 'none'
+                m.tree_enable_sparq = False
+                m.tree_enable_flash = True
+                m.tree_use_sliding_window = True
+                m.tree_sampling_method = 'center'
+            
+        self.generation_kwargs = generation_kwargs
+        self.stop = self.generation_kwargs.pop('stop')
+
+        if self.tokenizer.pad_token is None:
+            # add pad token to allow batching (known issue for llama2)
+            self.tokenizer.padding_side = 'left'
+            self.tokenizer.pad_token = self.tokenizer.eos_token
+            self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
 
     def __call__(self, prompt: str, **kwargs) -> dict:
         return self.process_batch([prompt], **kwargs)[0]
