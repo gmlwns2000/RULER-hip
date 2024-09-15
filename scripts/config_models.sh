@@ -31,12 +31,12 @@ MODEL_SELECT() {
     
     case $MODEL_NAME in
         llama3.1-8b-chat)
-            MODEL_PATH="hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
             MODEL_TEMPLATE_TYPE="llama3.1-chat"
             MODEL_FRAMEWORK="vllm"
             ;;
         llama3.1-8b-bigbird)
-            MODEL_PATH="hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
             MODEL_TEMPLATE_TYPE="llama3.1-chat"
             MODEL_FRAMEWORK="vllm"
             ;;
