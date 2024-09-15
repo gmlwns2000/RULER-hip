@@ -23,7 +23,9 @@ fi
 
 
 # Root Directories
-GPUS="2" # GPU size for tensor_parallel.
+if [ "$GPUS" == "" ]; then
+    GPUS="2" # GPU size for tensor_parallel.
+fi
 ROOT_DIR="benchmark_root" # the path that stores generated task samples and model predictions.
 MODEL_DIR="../.." # the path that contains individual model folders from HUggingface.
 ENGINE_DIR="." # the path that contains individual engine folders from TensorRT-LLM.
@@ -66,7 +68,9 @@ if [ "$MODEL_FRAMEWORK" == "vllm" ]; then
         --dtype bfloat16 \
         --disable-custom-all-reduce \
         &
-
+    while ! nc -z localhost 5000; do   
+        sleep 0.1 # wait for 1/10 of the second before check again
+    done
 elif [ "$MODEL_FRAMEWORK" == "trtllm" ]; then
     python pred/serve_trt.py \
         --model_path=${MODEL_PATH} \
