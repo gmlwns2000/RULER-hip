@@ -29,7 +29,9 @@ fi
 ROOT_DIR="benchmark_root" # the path that stores generated task samples and model predictions.
 MODEL_DIR="../.." # the path that contains individual model folders from HUggingface.
 ENGINE_DIR="." # the path that contains individual engine folders from TensorRT-LLM.
-BATCH_SIZE=1  # increase to improve GPU utilization
+if [ "$BATCH_SIZE" == "" ]; then
+    BATCH_SIZE=1  # increase to improve GPU utilization
+fi
 if [ "$SERVER_PORT" == "" ]; then
     SERVER_PORT=5000
 fi
@@ -69,7 +71,8 @@ if [ "$MODEL_FRAMEWORK" == "vllm" ]; then
         --tensor-parallel-size=${GPUS} \
         --dtype bfloat16 \
         --port ${SERVER_PORT} \
-        --gpu-memory-utilization 0.8 \
+        --gpu-memory-utilization 0.7 \
+        --max-num-seqs ${BATCH_SIZE} \
         &
         # --disable-custom-all-reduce \
     while ! nc -z localhost ${SERVER_PORT}; do   
