@@ -30,49 +30,54 @@ MODEL_SELECT() {
     ENGINE_DIR=$3
     
     case $MODEL_NAME in
-        llama2-7b-chat)
-            MODEL_PATH="${MODEL_DIR}/llama2-7b-chat-hf"
-            MODEL_TEMPLATE_TYPE="meta-chat"
+        llama3.1-8b-chat)
+            MODEL_PATH="hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
             MODEL_FRAMEWORK="vllm"
             ;;
-        gpt-3.5-turbo)
-            MODEL_PATH="gpt-3.5-turbo-0125"
-            MODEL_TEMPLATE_TYPE="base"
-            MODEL_FRAMEWORK="openai"
-            TOKENIZER_PATH="cl100k_base"
-            TOKENIZER_TYPE="openai"
-            OPENAI_API_KEY=""
-            AZURE_ID=""
-            AZURE_SECRET=""
-            AZURE_ENDPOINT=""
-            ;;
-        gpt-4-turbo)
-            MODEL_PATH="gpt-4"
-            MODEL_TEMPLATE_TYPE="base"
-            MODEL_FRAMEWORK="openai"
-            TOKENIZER_PATH="cl100k_base"
-            TOKENIZER_TYPE="openai"
-            OPENAI_API_KEY=""
-            AZURE_ID=""
-            AZURE_SECRET=""
-            AZURE_ENDPOINT=""
-            ;;
-        gemini_1.0_pro)
-            MODEL_PATH="gemini-1.0-pro-latest"
-            MODEL_TEMPLATE_TYPE="base"
-            MODEL_FRAMEWORK="gemini"
-            TOKENIZER_PATH=$MODEL_PATH
-            TOKENIZER_TYPE="gemini"
-            GEMINI_API_KEY=""
-            ;;
-        gemini_1.5_pro)
-            MODEL_PATH="gemini-1.5-pro-latest"
-            MODEL_TEMPLATE_TYPE="base"
-            MODEL_FRAMEWORK="gemini"
-            TOKENIZER_PATH=$MODEL_PATH
-            TOKENIZER_TYPE="gemini"
-            GEMINI_API_KEY=""
-            ;;
+        # llama2-7b-chat)
+        #     MODEL_PATH="${MODEL_DIR}/llama2-7b-chat-hf"
+        #     MODEL_TEMPLATE_TYPE="meta-chat"
+        #     MODEL_FRAMEWORK="vllm"
+        #     ;;
+        # gpt-3.5-turbo)
+        #     MODEL_PATH="gpt-3.5-turbo-0125"
+        #     MODEL_TEMPLATE_TYPE="base"
+        #     MODEL_FRAMEWORK="openai"
+        #     TOKENIZER_PATH="cl100k_base"
+        #     TOKENIZER_TYPE="openai"
+        #     OPENAI_API_KEY=""
+        #     AZURE_ID=""
+        #     AZURE_SECRET=""
+        #     AZURE_ENDPOINT=""
+        #     ;;
+        # gpt-4-turbo)
+        #     MODEL_PATH="gpt-4"
+        #     MODEL_TEMPLATE_TYPE="base"
+        #     MODEL_FRAMEWORK="openai"
+        #     TOKENIZER_PATH="cl100k_base"
+        #     TOKENIZER_TYPE="openai"
+        #     OPENAI_API_KEY=""
+        #     AZURE_ID=""
+        #     AZURE_SECRET=""
+        #     AZURE_ENDPOINT=""
+        #     ;;
+        # gemini_1.0_pro)
+        #     MODEL_PATH="gemini-1.0-pro-latest"
+        #     MODEL_TEMPLATE_TYPE="base"
+        #     MODEL_FRAMEWORK="gemini"
+        #     TOKENIZER_PATH=$MODEL_PATH
+        #     TOKENIZER_TYPE="gemini"
+        #     GEMINI_API_KEY=""
+        #     ;;
+        # gemini_1.5_pro)
+        #     MODEL_PATH="gemini-1.5-pro-latest"
+        #     MODEL_TEMPLATE_TYPE="base"
+        #     MODEL_FRAMEWORK="gemini"
+        #     TOKENIZER_PATH=$MODEL_PATH
+        #     TOKENIZER_TYPE="gemini"
+        #     GEMINI_API_KEY=""
+        #     ;;
     esac
 
 

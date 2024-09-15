@@ -12,6 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+LLAMA31_CHAT = """<|start_header_id|>system<|end_header_id|>
+
+Cutting Knowledge Date: December 2023
+Today Date: 26 Jul 2024
+
+<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+{task_template}
+
+<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"""
+
 Templates = {
     'base': "{task_template}",
 
@@ -28,4 +41,6 @@ Templates = {
     'RWKV': "User: hi\n\nAssistant: Hi. I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it\n\nUser: {task_template}\n\nAssistant:",
 
     'Phi3': "<|user|>\n{task_template}<|end|>\n<|assistant|>\n",
+    
+    'llama3.1-chat': LLAMA31_CHAT,
 }
