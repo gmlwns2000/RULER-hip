@@ -71,9 +71,11 @@ if [ "$MODEL_FRAMEWORK" == "vllm" ]; then
         --tensor-parallel-size=${GPUS} \
         --dtype bfloat16 \
         --port ${SERVER_PORT} \
-        --gpu-memory-utilization 0.7 \
+        --gpu-memory-utilization 0.75 \
         --max-num-batched-tokens 131072 \
+        --max-model-len 131072 \
         --enable-chunked-prefill False \
+        --trust-remote-code \
         --max-num-seqs ${BATCH_SIZE} \
         &
         # --disable-custom-all-reduce \

@@ -50,6 +50,26 @@ MODEL_SELECT() {
             MODEL_TEMPLATE_TYPE="llama3.1-chat"
             MODEL_FRAMEWORK="sllm"
             ;;
+        glm4-9b-chat-hip)
+            MODEL_PATH="THUDM/glm-4-9b-chat-1m"
+            MODEL_TEMPLATE_TYPE="chatglm-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
+        glm4-9b-chat-hip-snap)
+            MODEL_PATH="THUDM/glm-4-9b-chat-1m"
+            MODEL_TEMPLATE_TYPE="chatglm-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
+        glm4-9b-chat-hip-snap-8k)
+            MODEL_PATH="THUDM/glm-4-9b-chat-1m"
+            MODEL_TEMPLATE_TYPE="chatglm-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
+        glm4-9b-chat-bigbird)
+            MODEL_PATH="THUDM/glm-4-9b-chat-1m"
+            MODEL_TEMPLATE_TYPE="chatglm-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
         # llama2-7b-chat)
         #     MODEL_PATH="${MODEL_DIR}/llama2-7b-chat-hf"
         #     MODEL_TEMPLATE_TYPE="meta-chat"
