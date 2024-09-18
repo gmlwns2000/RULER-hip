@@ -127,14 +127,14 @@ class StreamingModel:
         for m in self.model.modules():
             if hasattr(m, 'attention_method'):
                 m.attention_method = os.getenv('RULER_ATTENTION_BACKEND', 'hip')
-                m.tree_k = 512
-                m.tree_block_size_q = 64
-                m.tree_block_stride_q = 2
-                m.tree_block_size_k = 2
-                m.tree_block_stride_k = 1
+                m.tree_k = int(os.getenv('HIP_K', '512'))
+                m.tree_block_size_q = int(os.getenv('HIP_BQ', '64'))
+                m.tree_block_stride_q = int(os.getenv('HIP_BSQ', '2'))
+                m.tree_block_size_k = int(os.getenv('HIP_BK', '2'))
+                m.tree_block_stride_k = int(os.getenv('HIP_BSK', '1'))
                 m.tree_using_context_avg = False
                 m.tree_dense_queries = -1
-                m.tree_dense_layers = list(range(3))
+                m.tree_dense_layers = list(range(int(os.getenv('HIP_DENSE_LAYERS', '3'))))
                 m.tree_rope_method = 'none'
                 m.tree_enable_sparq = False
                 m.tree_enable_flash = True
