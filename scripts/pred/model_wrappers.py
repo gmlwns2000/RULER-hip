@@ -89,6 +89,77 @@ class HuggingFaceModel:
 
         return results
 
+class H2oModel:
+    def __init__(self, name_or_path: str, **generation_kwargs) -> None:
+        from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+
+        self.tokenizer = AutoTokenizer.from_pretrained(name_or_path, trust_remote_code=True)
+
+        if 'Yarn-Llama' in name_or_path:
+            model_kwargs = None
+        else:
+            model_kwargs = {"attn_implementation": "flash_attention_2"}
+        
+        # from hip.models.h2o_llama_masked import H2OLlamaForCausalLM # this file does not use H2O, use this for validation
+        from hip.models.h2o_llama import H2OLlamaForCausalLM, LlamaConfig # this is real H2O
+        ModelClass = H2OLlamaForCausalLM
+        config = LlamaConfig.from_pretrained(name_or_path)
+        config.hh_size = 4
+        config.recent_size = int(os.getenv('HIP_K', '512'))
+        config._attn_implementation = config.attn_implementation = 'eager'
+        
+        self.pipeline = None
+        self.model = ModelClass.from_pretrained(
+            name_or_path, 
+            trust_remote_code=True, 
+            device_map="auto", 
+            torch_dtype=torch.bfloat16,
+        )
+            
+        self.generation_kwargs = generation_kwargs
+        self.stop = self.generation_kwargs.pop('stop')
+
+        if self.tokenizer.pad_token is None:
+            # add pad token to allow batching (known issue for llama2)
+            self.tokenizer.padding_side = 'left'
+            self.tokenizer.pad_token = self.tokenizer.eos_token
+            self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
+
+
+    def __call__(self, prompt: str, **kwargs) -> dict:
+        return self.process_batch([prompt], **kwargs)[0]
+
+    def process_batch(self, prompts: List[str], **kwargs) -> List[dict]:
+        if self.pipeline is None:
+            inputs = self.tokenizer(prompts, return_tensors="pt", padding=True).to(self.model.device)
+            generated_ids = self.model.generate(
+                **inputs,
+                **self.generation_kwargs
+            )
+            generated_texts = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+        else:
+            output = self.pipeline(text_inputs=prompts, **self.generation_kwargs, )
+            assert len(output) == len(prompts)
+            # output in the form of a list of list of dictionaries
+            # outer list len = batch size
+            # inner list len = 1
+            generated_texts = [llm_result[0]["generated_text"] for llm_result in output]
+
+        results = []
+
+        for text, prompt in zip(generated_texts, prompts):
+            # remove the input form the generated text
+            if text.startswith(prompt):
+                text = text[len(prompt):]
+
+            if self.stop is not None:
+                for s in self.stop:
+                    text = text.split(s)[0]
+
+            results.append({'text': [text]})
+
+        return results
+
 
 class StreamingModel:
     def __init__(self, name_or_path: str, **generation_kwargs) -> None:

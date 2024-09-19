@@ -193,6 +193,19 @@ def get_llm(tokens_to_generate):
             max_new_tokens=tokens_to_generate,
         )
     
+    elif args.server_type == 'h2o':
+        from model_wrappers import H2oModel
+        llm = H2oModel(
+            name_or_path=args.model_name_or_path,
+            do_sample=args.temperature > 0,
+            repetition_penalty=1,
+            temperature=args.temperature,
+            top_k=args.top_k,
+            top_p=args.top_p,
+            stop=args.stop_words,
+            max_new_tokens=tokens_to_generate,
+        )
+    
     elif args.server_type == 'mamba':
         from model_wrappers import MambaModel
         # mamba uses its own generation function, do not pass in do_sample

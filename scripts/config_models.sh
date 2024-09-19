@@ -90,6 +90,11 @@ MODEL_SELECT() {
             MODEL_TEMPLATE_TYPE="llama3.1-chat"
             MODEL_FRAMEWORK="vllm"
             ;;
+        llama3.1-8b-instruct-h2o)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="h2o"
+            ;;
         # llama2-7b-chat)
         #     MODEL_PATH="${MODEL_DIR}/llama2-7b-chat-hf"
         #     MODEL_TEMPLATE_TYPE="meta-chat"
