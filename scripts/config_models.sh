@@ -35,6 +35,26 @@ MODEL_SELECT() {
             MODEL_TEMPLATE_TYPE="llama3.1-chat"
             MODEL_FRAMEWORK="vllm"
             ;;
+        llama3.1-8b-chat-1)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
+        llama3.1-8b-chat-2)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
+        llama3.1-8b-chat-3)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
+        llama3.1-8b-chat-4)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="vllm"
+            ;;
         llama3.1-8b-hip1k)
             MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
             MODEL_TEMPLATE_TYPE="llama3.1-chat"
