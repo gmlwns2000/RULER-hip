@@ -200,10 +200,16 @@ def generate_samples(num_samples: int, max_seq_length: int, save_dir: str, incre
 
     if args.type_haystack == 'essay':
         incremental = 500
+        if max_seq_length > 131072:
+            incremental = 3000
     elif args.type_haystack == 'repeat':
         incremental = 25
+        if max_seq_length > 131072:
+            incremental = 150
     elif args.type_haystack == 'needle':
         incremental = 25
+        if max_seq_length > 131072:
+            incremental = 150
         
     if args.type_haystack != 'essay' and args.max_seq_length < 4096:
         incremental = 5

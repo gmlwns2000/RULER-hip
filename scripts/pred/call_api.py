@@ -87,7 +87,7 @@ parser.add_argument("--top_p", type=float, default=1.0)
 parser.add_argument("--random_seed", type=int, default=0)
 parser.add_argument("--stop_words", type=str, default='')
 parser.add_argument("--sliding_window_size", type=int)
-parser.add_argument("--threads", type=int, default=4)
+parser.add_argument("--threads", type=int, default=1)
 parser.add_argument("--batch_size", type=int, default=1)
 
 args = parser.parse_args()

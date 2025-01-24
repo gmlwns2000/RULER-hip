@@ -6,3 +6,4 @@ __pycache__/
 hotpotqa.json
 PaulGrahamEssays.json
 squad.json
+benchmark_root/

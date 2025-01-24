@@ -128,8 +128,8 @@ def main():
             result = subprocess.run(command, 
                                     shell=True, 
                                     check=True, 
-                                    stdout=subprocess.PIPE, 
-                                    stderr=subprocess.PIPE, 
+                                    # stdout=subprocess.PIPE, 
+                                    # stderr=subprocess.PIPE, 
                                     text=True)
             
             if result.returncode == 0:

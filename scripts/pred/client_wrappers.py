@@ -170,15 +170,17 @@ class SGLClient(Client):
         random_seed,
         stop: List[str],
     ):
+        sampling_params = {
+            # "min_new_tokens": min(10, tokens_to_generate),
+            "max_new_tokens": tokens_to_generate,
+            "temperature": temperature,
+            "top_k": top_k,
+            "top_p": top_p,
+            "stop": stop,
+        }
         request = {
             "text": prompts[0],
-            "sampling_params": {
-                "max_new_tokens": tokens_to_generate,
-                "temperature": temperature,
-                "top_k": top_k,
-                "top_p": top_p,
-                "stop": stop,
-            }
+            "sampling_params": sampling_params
         }
         # TODO: random seed is not supported?
         outputs = self._send_request(request)
