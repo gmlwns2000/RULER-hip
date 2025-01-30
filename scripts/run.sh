@@ -88,12 +88,13 @@ elif [ "$MODEL_FRAMEWORK" == "trtllm" ]; then
         &
 
 elif [ "$MODEL_FRAMEWORK" == "sglang" ]; then
-    python -m sglang.launch_server \
-        --model-path ${MODEL_PATH} \
-        --tp ${GPUS} \
-        --port ${SERVER_PORT} \
-        --enable-flashinfer \
-        &
+    # python -m sglang.launch_server \
+    #     --model-path ${MODEL_PATH} \
+    #     --tp ${GPUS} \
+    #     --port ${SERVER_PORT} \
+    #     --enable-flashinfer \
+    #     &
+    echo "SGL Server Launch is SKIPPED. Connect to http://localhost:$SERVER_PORT/generate"
     # use sglang/test/killall_sglang.sh to kill sglang server if it hangs
 
 fi

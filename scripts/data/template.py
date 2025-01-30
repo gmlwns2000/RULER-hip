@@ -43,4 +43,8 @@ Templates = {
     'Phi3': "<|user|>\n{task_template}<|end|>\n<|assistant|>\n",
     
     'llama3.1-chat': LLAMA31_CHAT,
+    
+    'deepseek': '<｜begin▁of▁sentence｜><｜User｜>{task_template}<｜end▁of▁sentence｜><｜Assistant｜>',
+    
+    'qwen2': '<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n{task_template}<|im_end|>\n<|im_start|>assistant\n',
 }
