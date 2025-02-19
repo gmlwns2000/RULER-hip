@@ -12,16 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPERATURE="0.0" # greedy
-TOP_P="1.0"
-TOP_K="32"
+# greedy
+TEMPERATURE="0"
+TOP_P="1"
+TOP_K="-1"
 SEQ_LENGTHS=(
-    131072
+    # ### 1048576
+    # 524288
+    # 262144
     65536
-    32768
-    16384
-    8192
-    4096
+    # 131072
+    # 32768
+    # 16384
+    # 8192
+    # 4096
 )
 
 MODEL_SELECT() {
@@ -30,6 +34,61 @@ MODEL_SELECT() {
     ENGINE_DIR=$3
     
     case $MODEL_NAME in
+        deepseek-sglang)
+            MODEL_PATH="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
+            MODEL_TEMPLATE_TYPE="deepseek"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        qwen2-sglang)
+            MODEL_PATH="Qwen/Qwen2.5-14B-Instruct-AWQ"
+            MODEL_TEMPLATE_TYPE="qwen2"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-dev)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-dev-1)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-dev-2)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-fa2)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-1)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-2)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-3)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
+        llama3.1-8b-chat-sglang-4)
+            MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
+            MODEL_TEMPLATE_TYPE="llama3.1-chat"
+            MODEL_FRAMEWORK="sglang"
+            ;;
         llama3.1-8b-chat)
             MODEL_PATH="meta-llama/Meta-Llama-3.1-8B-Instruct"
             MODEL_TEMPLATE_TYPE="llama3.1-chat"
