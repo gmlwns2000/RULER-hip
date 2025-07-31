@@ -182,6 +182,7 @@ class SGLClient(Client):
             "text": prompts[0],
             "sampling_params": sampling_params
         }
+        request['text'] = request['text'].replace('<|begin_of_text|>', '')
         # TODO: random seed is not supported?
         outputs = self._send_request(request)
         outputs = outputs['text']
