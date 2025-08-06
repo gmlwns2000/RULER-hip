@@ -73,7 +73,7 @@ parser.add_argument("--chunk_amount", type=int, default=1, help='size of split c
 
 # Server
 parser.add_argument("--server_type", default='nemo', action=ServerAction, choices=SERVER_TYPES)
-parser.add_argument("--server_host", type=str, default='127.0.0.1')
+parser.add_argument("--server_host", type=str, default=os.getenv('SERVER_HOST', '127.0.0.1'))
 parser.add_argument("--server_port", type=str, default='5000')
 parser.add_argument("--ssh_server", type=str)
 parser.add_argument("--ssh_key_path", type=str)

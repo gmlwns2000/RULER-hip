@@ -47,4 +47,6 @@ Templates = {
     'deepseek': '<｜begin▁of▁sentence｜><｜User｜>{task_template}<｜end▁of▁sentence｜><｜Assistant｜>',
     
     'qwen2': '<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n{task_template}<|im_end|>\n<|im_start|>assistant\n',
+    
+    'qwen3': '<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n{task_template}<|im_end|>\n<|im_start|>assistant\n',
 }

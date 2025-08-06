@@ -186,6 +186,10 @@ class SGLClient(Client):
         # TODO: random seed is not supported?
         outputs = self._send_request(request)
         outputs = outputs['text']
+        assert isinstance(outputs, str)
+        think_token = '</think>'
+        if think_token in outputs:
+            outputs = outputs[outputs.index(think_token)+len(think_token):].strip()
         return outputs
 
 
