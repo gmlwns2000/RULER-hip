@@ -7,3 +7,6 @@ hotpotqa.json
 PaulGrahamEssays.json
 squad.json
 benchmark_root/
+benchmark_root*
+
+test.txt
